@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrueFrame Production — We Frame Every Story Perfectly</title>
+  <meta name="description" content="TrueFrame Production — Cinematic storytelling for brands that demand excellence. Video Production, Editing, Digital Marketing, Meta Ads, Website Development, Creative Design." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FAF7F2;
+      color: #1A1714;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-dark: #A8882C;
+      --cream: #FAF7F2;
+      --cream-dark: #F0EBE1;
+      --charcoal: #1A1714;
+      --charcoal-soft: #2C2825;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.25rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease;
+    }
+    
+    .navbar.scrolled {
+      background: rgba(250, 247, 242, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 1px 0 rgba(201,168,76,0.15), 0 4px 20px rgba(0,0,0,0.06);
+      padding: 0.875rem 2.5rem;
+    }
+    .navbar-logo img {
+      height: 150px; width: auto; object-fit: contain;
+      filter: brightness(0) invert(1);
+      transition: filter 0.4s ease;
+    }
+    .navbar.scrolled .navbar-logo img { filter: none; }
+    .navbar-logo span {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem; font-weight: 700;
+      color: #fff;
+      transition: color 0.4s ease;
+      display: none;
+    }
+    .navbar.scrolled .navbar-logo span { color: var(--charcoal); }
+    .navbar-logo.logo-fallback span { display: block; }
+    .navbar-logo.logo-fallback img { display: none; }
+    .nav-links {
+      display: flex; align-items: center; gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.8125rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      transition: color 0.3s ease;
+    }
+    .navbar.scrolled .nav-links a { color: var(--charcoal-soft); }
+    .nav-links a:hover { color: var(--gold) !important; }
+    .btn-talk {
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--charcoal); background: var(--gold);
+      border: none; padding: 0.6rem 1.5rem;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .btn-talk:hover { background: var(--gold-dark); transform: translateY(-1px); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 1.5px;
+      background: rgba(255,255,255,0.9);
+      transition: background 0.3s ease;
+    }
+    .navbar.scrolled .hamburger span { background: var(--charcoal); }
+    .mobile-menu {
+      display: none; position: fixed; inset: 0;
+      background: var(--charcoal); z-index: 999;
+      flex-direction: column; align-items: center;
+      justify-content: center; gap: 2.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.25rem; font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      transition: color 0.2s ease;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: none; border: none;
+      color: rgba(255,255,255,0.7); font-size: 2rem;
+      transition: color 0.2s ease; line-height: 1;
+    }
+    .mobile-close:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; background: var(--charcoal);
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=2000&auto=format&fit=crop');
+      background-size: cover; background-position: center;
+      opacity: 0.35; transform: scale(1.05);
+      transition: transform 8s ease;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(26,23,20,0.3) 0%, rgba(26,23,20,0.1) 40%, rgba(26,23,20,0.5) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center; padding: 0 1.5rem; max-width: 900px;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.75rem;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+    }
+    .hero-eyebrow.visible { opacity: 1; transform: translateY(0); }
+    .hero-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 700; line-height: 1.05; color: #fff;
+      margin-bottom: 1.75rem;
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.9s ease 0.4s, transform 0.9s ease 0.4s;
+    }
+    .hero-title.visible { opacity: 1; transform: translateY(0); }
+    .hero-title .gold-word { color: var(--gold); font-style: italic; }
+    .hero-subtitle {
+      font-size: 1.0625rem; font-weight: 300;
+      color: rgba(255,255,255,0.7); letter-spacing: 0.04em;
+      margin-bottom: 3rem;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s ease 0.65s, transform 0.8s ease 0.65s;
+    }
+    .hero-subtitle.visible { opacity: 1; transform: translateY(0); }
+    .btn-primary {
+      font-size: 0.8125rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--charcoal); background: var(--gold);
+      border: none; padding: 1rem 2.75rem;
+      display: inline-block;
+      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease;
+      opacity: 0; transform: translateY(20px);
+      transition-property: opacity, transform, background, box-shadow;
+      transition-duration: 0.8s, 0.8s, 0.3s, 0.3s;
+      transition-delay: 0.85s, 0.85s, 0s, 0s;
+    }
+    .btn-primary.visible { opacity: 1; transform: translateY(0); }
+    .btn-primary:hover { background: var(--gold-dark); box-shadow: 0 8px 30px rgba(201,168,76,0.35); transform: translateY(-2px) !important; }
+    .hero-scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      z-index: 2;
+      opacity: 0; transition: opacity 1s ease 1.4s;
+    }
+    .hero-scroll-hint.visible { opacity: 1; }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, rgba(201,168,76,0.6), transparent);
+      animation: scrollPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.1); }
+    }
+
+    /* ── SECTIONS ── */
+    .section { padding: 7rem 2.5rem; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold);
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .section-label::before {
+      content: ''; display: block; width: 30px; height: 1px;
+      background: var(--gold); flex-shrink: 0;
+    }
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      font-weight: 700; line-height: 1.1; color: var(--charcoal);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── FADE ANIMATIONS ── */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── ABOUT ── */
+    .about-section { background: var(--cream); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+    .about-text-block { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+    .about-line {
+      font-size: 1.05rem; font-weight: 300; line-height: 1.75; color: #4A4540;
+      border-left: 2px solid var(--gold); padding-left: 1.5rem;
+      opacity: 0; transform: translateX(-20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .about-line.visible { opacity: 1; transform: translateX(0); }
+    .about-image-frame { position: relative; overflow: hidden; }
+    .about-image-frame img { width: 100%; height: 500px; object-fit: cover; transition: transform 0.6s ease; }
+    .about-image-frame:hover img { transform: scale(1.03); }
+    .about-image-frame::after {
+      content: ''; position: absolute;
+      bottom: -1.5rem; right: -1.5rem;
+      width: 60%; height: 60%;
+      border: 2px solid var(--gold); z-index: -1; opacity: 0.4;
+    }
+    .about-stats {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; margin-top: 3rem; padding-top: 3rem;
+      border-top: 1px solid var(--cream-dark);
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.5rem; font-weight: 700; color: var(--gold); line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #888; margin-top: 0.375rem;
+    }
+
+    /* ── SERVICES ── */
+    .services-section { background: var(--charcoal); padding: 7rem 2.5rem; }
+    .services-section .section-title { color: #fff; }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5px; margin-top: 4rem;
+      background: rgba(255,255,255,0.06);
+    }
+    .service-card {
+      background: rgba(26,23,20,0.85);
+      padding: 2.75rem 2.25rem;
+      transition: background 0.3s ease, transform 0.3s ease;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 2px;
+      background: var(--gold);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .service-card:hover { background: rgba(44,40,37,0.95); transform: translateY(-4px); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-icon { width: 44px; height: 44px; margin-bottom: 1.5rem; color: var(--gold); }
+    .service-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.35rem; font-weight: 600; color: #fff; margin-bottom: 0.875rem;
+    }
+    .service-desc { font-size: 0.875rem; line-height: 1.7; color: rgba(255,255,255,0.5); font-weight: 300; }
+
+    /* ── PORTFOLIO SECTION ── */
+    .portfolio-section { background: var(--cream-dark); padding: 7rem 2.5rem; }
+    .portfolio-cta-block {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 3rem; flex-wrap: wrap; margin-top: 2.5rem;
+    }
+    .portfolio-cta-text {
+      font-size: 1.0625rem; font-weight: 300; line-height: 1.75;
+      color: #5A5450; max-width: 520px;
+    }
+    .btn-outline {
+      font-size: 0.8125rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--charcoal); background: transparent;
+      border: 1.5px solid var(--charcoal);
+      padding: 1rem 2.5rem;
+      transition: background 0.3s ease, color 0.3s ease, transform 0.25s ease;
+      white-space: nowrap;
+    }
+    .btn-outline:hover { background: var(--charcoal); color: var(--cream); transform: translateY(-2px); }
+
+    /* ── PORTFOLIO OVERLAY ── */
+    .portfolio-overlay {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(26,23,20,0.97);
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .portfolio-overlay.open { opacity: 1; pointer-events: all; }
+    .overlay-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.75rem 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    .overlay-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem; font-weight: 600; color: #fff;
+    }
+    .overlay-close {
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.06); border: none;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.7); font-size: 1.5rem; line-height: 1;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .overlay-close:hover { background: var(--gold); color: var(--charcoal); }
+    .overlay-body { flex: 1; overflow-y: auto; padding: 2.5rem; }
+
+    /* Categories */
+    .categories-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; max-width: 1000px; margin: 0 auto;
+    }
+    .category-card { position: relative; height: 340px; overflow: hidden; cursor: pointer; }
+    .category-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .category-card video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: 0; transition: opacity 0.5s ease;
+    }
+    .category-card:hover img { transform: scale(1.08); }
+    .category-card:hover video { opacity: 1; }
+    .cat-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(26,23,20,0.85) 0%, rgba(26,23,20,0.2) 60%, transparent 100%);
+      display: flex; flex-direction: column;
+      align-items: flex-start; justify-content: flex-end;
+      padding: 1.75rem;
+      transition: background 0.3s ease;
+    }
+    .category-card:hover .cat-overlay {
+      background: linear-gradient(to top, rgba(26,23,20,0.92) 0%, rgba(26,23,20,0.35) 60%, transparent 100%);
+    }
+    .cat-label {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.5rem;
+    }
+    .cat-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.625rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;
+    }
+    .cat-hint {
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      display: flex; align-items: center; gap: 0.4rem;
+      transform: translateY(4px); opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .category-card:hover .cat-hint { opacity: 1; transform: translateY(0); }
+
+    /* Videos view */
+    .videos-view { max-width: 1200px; margin: 0 auto; }
+    .videos-view-header { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 2.5rem; }
+    .btn-back {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      background: none; border: none;
+      transition: color 0.2s ease; padding: 0;
+    }
+    .btn-back:hover { color: var(--gold); }
+    .videos-view-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem; font-weight: 700; color: #fff;
+    }
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
+      gap: 1.25rem;
+    }
+    .video-item { background: rgba(255,255,255,0.04); overflow: hidden; transition: transform 0.3s ease; }
+    .video-item:hover { transform: translateY(-4px); }
+    .video-item video { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; background: #111; }
+    .video-item-label {
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* ── CONTACT ── */
+    .contact-section { background: var(--charcoal); padding: 7rem 2.5rem; position: relative; overflow: hidden; }
+    .contact-section::before {
+      content: ''; position: absolute;
+      top: -100px; left: -100px; width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .contact-section .section-title { color: #fff; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+    .contact-tagline {
+      font-size: 1rem; font-weight: 300; line-height: 1.75;
+      color: rgba(255,255,255,0.5); margin-bottom: 2.5rem; margin-top: 1rem;
+    }
+    .contact-info-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .contact-info-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .contact-info-icon {
+      width: 40px; height: 40px;
+      background: rgba(201,168,76,0.1);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); flex-shrink: 0;
+    }
+    .contact-info-type {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); display: block; margin-bottom: 0.2rem;
+    }
+    .contact-info-value {
+      font-size: 0.9375rem; color: rgba(255,255,255,0.85);
+      transition: color 0.2s ease;
+    }
+    .contact-info-value:hover { color: var(--gold); }
+    .contact-cta-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 3rem;
+    }
+    .contact-cta-headline {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.625rem; font-weight: 600; color: #fff; margin-bottom: 0.875rem;
+    }
+    .contact-cta-sub {
+      font-size: 0.875rem; color: rgba(255,255,255,0.45);
+      line-height: 1.7; margin-bottom: 2rem;
+    }
+    .btn-gold-solid {
+      font-size: 0.8125rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--charcoal); background: var(--gold);
+      border: none; padding: 1.125rem 3rem;
+      width: 100%; text-align: center; display: block;
+      transition: background 0.3s ease, transform 0.25s ease;
+    }
+    .btn-gold-solid:hover { background: var(--gold-dark); transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: #0F0D0B; padding: 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem; flex-wrap: wrap;
+    }
+    .footer-brand {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.1rem; font-weight: 600; color: rgba(255,255,255,0.6);
+    }
+    .footer-brand span { color: var(--gold); }
+    .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.3); letter-spacing: 0.05em; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links, .btn-talk { display: none; }
+      .hamburger { display: flex; }
+      .navbar { padding: 1rem 1.5rem; }
+      .navbar.scrolled { padding: 0.75rem 1.5rem; }
+      .section { padding: 5rem 1.5rem; }
+      .services-section, .portfolio-section, .contact-section { padding: 5rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-image-frame img { height: 320px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .categories-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .portfolio-cta-block { flex-direction: column; align-items: flex-start; }
+      .overlay-body { padding: 1.5rem; }
+      .footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+      .videos-grid { grid-template-columns: 1fr; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(2,1fr); }
+      .categories-grid { grid-template-columns: repeat(2,1fr); }
+      .about-grid { gap: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar" id="navbar">	
+    <a href="#" class="navbar-logo" id="navLogo">
+      <img src="logo/logo.png" alt="TrueFrame Production" class="logo">
+      <span>TrueFrame</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about" onclick="smoothScroll('about');return false;">About</a></li>
+      <li><a href="#services" onclick="smoothScroll('services');return false;">Services</a></li>
+      <li><a href="#work" onclick="smoothScroll('work');return false;">Work</a></li>
+    </ul>
+    <a class="btn-talk" href="https://mail.google.com/mail/?view=cm&fs=1&to=trueframeproductionoffical@gmail.com" target="_blank" rel="noopener noreferrer">Let's Talk</a>
+    <button class="hamburger" onclick="openMobileMenu()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" onclick="closeMobileMenu()" aria-label="Close">&times;</button>
+    <a href="#about" onclick="closeMobileMenu();smoothScroll('about');return false;">About</a>
+    <a href="#services" onclick="closeMobileMenu();smoothScroll('services');return false;">Services</a>
+    <a href="#work" onclick="closeMobileMenu();smoothScroll('work');return false;">Work</a>
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trueframeproductionoffical@gmail.com" target="_blank" rel="noopener noreferrer" style="font-size:1rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);">Let's Talk</a>
+  </div>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow" id="heroEyebrow">TrueFrame Production</span>
+      <h1 class="hero-title" id="heroTitle">
+        We Frame Every <span class="gold-word">Story</span> Perfectly
+      </h1>
+      <p class="hero-subtitle" id="heroSubtitle">Cinematic storytelling for brands that demand excellence.</p>
+      <button class="btn-primary" id="heroCta" onclick="smoothScroll('work')">View Our Work</button>
+    </div>
+    <div class="hero-scroll-hint" id="heroScroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ══ ABOUT ══ -->
+  <section class="section about-section" id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div>
+          <div class="fade-up">
+            <div class="section-label">About Us</div>
+            <h2 class="section-title">Crafting Visual Excellence Since Day One</h2>
+          </div>
+          <div class="about-text-block">
+            <p class="about-line" style="transition-delay:0.1s">TrueFrame Production is a full-service creative studio specializing in cinematic video production and strategic digital marketing.</p>
+            <p class="about-line" style="transition-delay:0.25s">We believe every brand has a story worth telling — our job is to frame it with precision, artistry, and a relentless pursuit of quality.</p>
+            <p class="about-line" style="transition-delay:0.4s">From automotive films to lifestyle campaigns, we bring technical mastery and creative vision to every project we undertake.</p>
+          </div>
+          <div class="about-stats">
+            <div class="stat-item fade-up" style="transition-delay:0s">
+              <div class="stat-number">50+</div>
+              <div class="stat-label">Projects Delivered</div>
+            </div>
+            <div class="stat-item fade-up" style="transition-delay:0.1s">
+              <div class="stat-number">3+</div>
+              <div class="stat-label">Industries Served</div>
+            </div>
+            <div class="stat-item fade-up" style="transition-delay:0.2s">
+              <div class="stat-number">100%</div>
+              <div class="stat-label">Client Satisfaction</div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-up">
+          <div class="about-image-frame">
+            <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=1000&auto=format&fit=crop" alt="Professional video production team" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SERVICES ══ -->
+  <section class="services-section" id="services">
+    <div class="section-inner">
+      <div class="fade-up">
+        <div class="section-label" style="color:var(--gold)">What We Do</div>
+        <h2 class="section-title">Services Built for Impact</h2>
+      </div>
+      <div class="services-grid">
+        <!-- Card 1 -->
+        <div class="service-card fade-up" style="transition-delay:0s">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+          </svg>
+          <div class="service-title">Video Production</div>
+          <p class="service-desc">Cinematic storytelling from concept to final cut — crafted for brands that refuse to be ordinary.</p>
+        </div>
+        <!-- Card 2 -->
+        <div class="service-card fade-up" style="transition-delay:0.08s">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          <div class="service-title">Video Editing</div>
+          <p class="service-desc">Precision editing that transforms raw footage into a polished narrative that captivates and converts.</p>
+        </div>
+        <!-- Card 3 -->
+        <div class="service-card fade-up" style="transition-delay:0.16s">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+          </svg>
+          <div class="service-title">Digital Marketing</div>
+          <p class="service-desc">Data-driven strategies that amplify your reach and turn viewers into loyal brand advocates.</p>
+        </div>
+        <!-- Card 4 -->
+        <div class="service-card fade-up" style="transition-delay:0s">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+          </svg>
+          <div class="service-title">Meta Ads</div>
+          <p class="service-desc">High-ROI advertising campaigns engineered to hit your audience with pinpoint precision on Meta platforms.</p>
+        </div>
+        <!-- Card 5 -->
+        <div class="service-card fade-up" style="transition-delay:0.08s">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+          </svg>
+          <div class="service-title">Website Development</div>
+          <p class="service-desc">Clean, fast, and conversion-focused web experiences that reflect the premium quality of your brand.</p>
+        </div>
+        <!-- Card 6 -->
+        <div class="service-card fade-up" style="transition-delay:0.16s">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+            <path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>
+          </svg>
+          <div class="service-title">Creative Design</div>
+          <p class="service-desc">Visual identities and design systems that communicate your brand's essence with clarity and elegance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PORTFOLIO SECTION ══ -->
+  <section class="section portfolio-section" id="work">
+    <div class="section-inner">
+      <div class="fade-up">
+        <div class="section-label">Our Work</div>
+        <h2 class="section-title">Every Frame Tells a Story</h2>
+      </div>
+      <div class="portfolio-cta-block fade-up" style="transition-delay:0.15s">
+        <p class="portfolio-cta-text">From high-octane automotive films to intimate cafe stories and professional clinic showcases — our portfolio speaks for itself.</p>
+        <button class="btn-outline" onclick="openOverlay()">Browse Portfolio</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PORTFOLIO OVERLAY ══ -->
+  <div class="portfolio-overlay" id="portfolioOverlay">
+    <div class="overlay-header">
+      <span class="overlay-title" id="overlayTitle">Our Portfolio</span>
+      <button class="overlay-close" onclick="closeOverlay()" aria-label="Close">&times;</button>
+    </div>
+    <div class="overlay-body" id="overlayBody">
+      <!-- Categories view -->
+      <div class="categories-grid" id="categoriesView">
+        <!-- Automotive -->
+        <div class="category-card" onclick="openCategory('automotive')" onmouseenter="playPreview('automotive')" onmouseleave="pausePreview('automotive')">
+          <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1000&auto=format&fit=crop" alt="Automotive" loading="lazy" />
+          <video id="preview-automotive" src="AM/AM1.mp4" muted loop playsinline preload="none"></video>
+          <div class="cat-overlay">
+            <span class="cat-label">Category</span>
+            <span class="cat-name">Automotive</span>
+            <span class="cat-hint">View Films ›</span>
+          </div>
+        </div>
+        <!-- Cafe -->
+        <div class="category-card" onclick="openCategory('cafe')" onmouseenter="playPreview('cafe')" onmouseleave="pausePreview('cafe')">
+          <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1000&auto=format&fit=crop" alt="Cafe" loading="lazy" />
+          <video id="preview-cafe" src="cafe/Cafe1.mp4" muted loop playsinline preload="none"></video>
+          <div class="cat-overlay">
+            <span class="cat-label">Category</span>
+            <span class="cat-name">Cafe</span>
+            <span class="cat-hint">View Films ›</span>
+          </div>
+        </div>
+        <!-- Clinic -->
+        <div class="category-card" onclick="openCategory('clinic')" onmouseenter="playPreview('clinic')" onmouseleave="pausePreview('clinic')">
+          <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1000&auto=format&fit=crop" alt="Clinic" loading="lazy" />
+          <video id="preview-clinic" src="clinic/Clinic1.mp4" muted loop playsinline preload="none"></video>
+          <div class="cat-overlay">
+            <span class="cat-label">Category</span>
+            <span class="cat-name">Clinic</span>
+            <span class="cat-hint">View Films ›</span>
+          </div>
+        </div>
+      </div>
+      <!-- Videos view (hidden by default) -->
+      <div class="videos-view" id="videosView" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- ══ CONTACT ══ -->
+  <section class="contact-section" id="contact">
+    <div class="section-inner">
+      <div class="contact-grid">
+        <div class="fade-up">
+          <div class="section-label" style="color:var(--gold)">Get in Touch</div>
+          <h2 class="section-title">Let's Create Something Extraordinary</h2>
+          <p class="contact-tagline">Have a vision? We have the expertise to bring it to life. Reach out and let's start framing your story.</p>
+          <div class="contact-info-list">
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </div>
+              <div>
+                <span class="contact-info-type">Email</span>
+                <a class="contact-info-value" href="https://mail.google.com/mail/?view=cm&fs=1&to=trueframeproductionoffical@gmail.com" target="_blank" rel="noopener noreferrer">trueframeproductionoffical@gmail.com</a>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.16 6.16l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+              </div>
+              <div>
+                <span class="contact-info-type">Phone</span>
+                <a class="contact-info-value" href="tel:7845743304">+91 78457 43304</a>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.16 6.16l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+              </div>
+              <div>
+                <span class="contact-info-type">Phone</span>
+                <a class="contact-info-value" href="tel:8778765265">+91 87787 65265</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-up" style="transition-delay:0.15s">
+          <div class="contact-cta-box">
+            <h3 class="contact-cta-headline">Ready to Start a Project?</h3>
+            <p class="contact-cta-sub">Tell us about your vision. Whether it's a brand film, a digital campaign, or a website — we'll craft something that exceeds expectations.</p>
+            <a class="btn-gold-solid" href="https://mail.google.com/mail/?view=cm&fs=1&to=trueframeproductionoffical@gmail.com" target="_blank" rel="noopener noreferrer">Send Us a Message</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="footer-brand">True<span>Frame</span> Production</div>
+    <p class="footer-copy" id="footerYear">© 2024 TrueFrame Production. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // ── Year ──
+    document.getElementById('footerYear').textContent =
+      '© ' + new Date().getFullYear() + ' TrueFrame Production. All rights reserved.';
+
+    // ── Smooth scroll ──
+    function smoothScroll(id) {
+      var el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ── Mobile menu ──
+    function openMobileMenu() { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow = ''; }
+
+    // ── Navbar scroll ──
+    window.addEventListener('scroll', function () {
+      var navbar = document.getElementById('navbar');
+      if (window.scrollY > 60) { navbar.classList.add('scrolled'); }
+      else { navbar.classList.remove('scrolled'); }
+    }, { passive: true });
+
+    // ── Hero entrance ──
+    setTimeout(function () {
+      document.getElementById('heroBg').classList.add('loaded');
+      document.getElementById('heroEyebrow').classList.add('visible');
+      document.getElementById('heroTitle').classList.add('visible');
+      document.getElementById('heroSubtitle').classList.add('visible');
+      document.getElementById('heroCta').classList.add('visible');
+      document.getElementById('heroScroll').classList.add('visible');
+    }, 50);
+
+    // ── Intersection observer for scroll animations ──
+    var fadeEls = document.querySelectorAll('.fade-up, .about-line');
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(function (el) { observer.observe(el); });
+
+    // ── ESC key closes overlay ──
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeOverlay();
+    });
+
+    // ── Portfolio overlay ──
+    function openOverlay() {
+      showCategories();
+      document.getElementById('portfolioOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeOverlay() {
+      document.getElementById('portfolioOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+      pauseAllPreviews();
+    }
+
+    // ── Category video previews ──
+    function playPreview(id) {
+      var v = document.getElementById('preview-' + id);
+      if (v) v.play().catch(function(){});
+    }
+    function pausePreview(id) {
+      var v = document.getElementById('preview-' + id);
+      if (v) { v.pause(); v.currentTime = 0; }
+    }
+    function pauseAllPreviews() {
+      ['automotive','cafe','clinic'].forEach(function(id) { pausePreview(id); });
+    }
+
+    // ── Category data ──
+    var CATEGORIES = {
+      automotive: {
+        name: 'Automotive',
+        videos: ['AM/AM1.mp4','AM/AM2.mp4','AM/AM3.mp4','AM/AM4.mp4','AM/AM5.mp4','AM/AM7.mp4','AM/AM8.mp4','AM/AM9.mp4','AM/AM10.mp4','AM/AM11.mp4','AM/AM12.mp4']
+      },
+      cafe: {
+        name: 'Cafe',
+        videos: ['cafe/Cafe1.mp4','cafe/Cafe2.mp4','cafe/Cafe3.mp4','cafe/Cafe4.mp4']
+      },
+      clinic: {
+        name: 'Clinic',
+        videos: ['clinic/Clinic1.mp4','clinic/Clinic2.mp4','clinic/Clinic3.mp4']
+      }
+    };
+
+    function showCategories() {
+      document.getElementById('overlayTitle').textContent = 'Our Portfolio';
+      document.getElementById('categoriesView').style.display = 'grid';
+      document.getElementById('videosView').style.display = 'none';
+    }
+
+    function openCategory(id) {
+      pauseAllPreviews();
+      var cat = CATEGORIES[id];
+      if (!cat) return;
+      document.getElementById('overlayTitle').textContent = cat.name;
+      document.getElementById('categoriesView').style.display = 'none';
+
+      var videosView = document.getElementById('videosView');
+      videosView.style.display = 'block';
+
+      // Build videos HTML
+      var videosHtml = '<div class="videos-view-header">' +
+        '<button class="btn-back" onclick="showCategories()">‹ Back</button>' +
+        '<h2 class="videos-view-title">' + cat.name + '</h2>' +
+        '</div><div class="videos-grid">';
+
+      cat.videos.forEach(function(src) {
+        var name = src.split('/').pop().replace('.mp4', '');
+        videosHtml +=
+          '<div class="video-item">' +
+            '<video src="' + src + '" controls playsinline preload="metadata" style="background:#111"></video>' +
+            '<div class="video-item-label">' + name + '</div>' +
+          '</div>';
+      });
+      videosHtml += '</div>';
+      videosView.innerHTML = videosHtml;
+      document.getElementById('overlayBody').scrollTop = 0;
+    }
+  </script>
+</body>
+</html>
